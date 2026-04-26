@@ -1,0 +1,761 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NOKA COFFEE — 野花珈琲</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@300;400;600&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --cream: #f5f0e8;
+      --beige: #e8dfd0;
+      --brown: #6b4f3a;
+      --dark: #2c1f14;
+      --accent: #c9a96e;
+      --text: #3a2e24;
+      --light-text: #8a7a6a;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Noto Serif JP', serif;
+      background: var(--cream);
+      color: var(--text);
+      overflow-x: hidden;
+    }
+
+    /* NAV */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      padding: 20px 48px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      transition: background 0.4s, padding 0.4s;
+    }
+    nav.scrolled {
+      background: rgba(245,240,232,0.95);
+      backdrop-filter: blur(8px);
+      padding: 14px 48px;
+      box-shadow: 0 1px 0 rgba(107,79,58,0.1);
+    }
+    .nav-logo {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.5rem;
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      color: var(--dark);
+      text-decoration: none;
+    }
+    .nav-links {
+      display: flex;
+      gap: 36px;
+      list-style: none;
+    }
+    .nav-links a {
+      font-size: 0.75rem;
+      letter-spacing: 0.18em;
+      text-decoration: none;
+      color: var(--brown);
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--dark); }
+
+    /* HERO */
+    .hero {
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+      background: var(--dark);
+    }
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse at 30% 50%, rgba(201,169,110,0.18) 0%, transparent 60%),
+        radial-gradient(ellipse at 75% 30%, rgba(107,79,58,0.25) 0%, transparent 55%),
+        linear-gradient(160deg, #1a0f08 0%, #2c1f14 40%, #1a110a 100%);
+    }
+    .hero-pattern {
+      position: absolute;
+      inset: 0;
+      background-image:
+        repeating-linear-gradient(45deg, rgba(201,169,110,0.03) 0px, rgba(201,169,110,0.03) 1px, transparent 1px, transparent 60px),
+        repeating-linear-gradient(-45deg, rgba(201,169,110,0.03) 0px, rgba(201,169,110,0.03) 1px, transparent 1px, transparent 60px);
+    }
+    .hero-content {
+      position: relative;
+      z-index: 1;
+      animation: fadeUp 1.2s ease both;
+    }
+    .hero-eyebrow {
+      font-size: 0.7rem;
+      letter-spacing: 0.4em;
+      color: var(--accent);
+      margin-bottom: 28px;
+      text-transform: uppercase;
+    }
+    .hero-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(4rem, 10vw, 9rem);
+      font-weight: 300;
+      line-height: 0.95;
+      color: var(--cream);
+      letter-spacing: -0.01em;
+      margin-bottom: 12px;
+    }
+    .hero-title em {
+      font-style: italic;
+      color: var(--accent);
+    }
+    .hero-subtitle {
+      font-size: 0.85rem;
+      letter-spacing: 0.35em;
+      color: rgba(245,240,232,0.5);
+      margin-top: 24px;
+      margin-bottom: 48px;
+    }
+    .hero-cta {
+      display: inline-block;
+      padding: 14px 40px;
+      border: 1px solid var(--accent);
+      color: var(--accent);
+      text-decoration: none;
+      font-size: 0.7rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      transition: all 0.3s;
+    }
+    .hero-cta:hover {
+      background: var(--accent);
+      color: var(--dark);
+    }
+    .hero-scroll {
+      position: absolute;
+      bottom: 40px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+      color: rgba(245,240,232,0.4);
+      font-size: 0.65rem;
+      letter-spacing: 0.2em;
+    }
+    .scroll-line {
+      width: 1px;
+      height: 50px;
+      background: linear-gradient(to bottom, rgba(201,169,110,0.6), transparent);
+      animation: scrollLine 2s ease-in-out infinite;
+    }
+    @keyframes scrollLine {
+      0% { transform: scaleY(0); transform-origin: top; }
+      50% { transform: scaleY(1); transform-origin: top; }
+      51% { transform: scaleY(1); transform-origin: bottom; }
+      100% { transform: scaleY(0); transform-origin: bottom; }
+    }
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* SECTION COMMON */
+    section { padding: 100px 48px; }
+    .section-label {
+      font-size: 0.65rem;
+      letter-spacing: 0.4em;
+      color: var(--accent);
+      text-transform: uppercase;
+      margin-bottom: 16px;
+    }
+    .section-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2.2rem, 5vw, 3.8rem);
+      font-weight: 300;
+      line-height: 1.15;
+      color: var(--dark);
+      margin-bottom: 24px;
+    }
+    .section-title em { font-style: italic; color: var(--brown); }
+    .divider {
+      width: 40px;
+      height: 1px;
+      background: var(--accent);
+      margin-bottom: 32px;
+    }
+
+    /* CONCEPT */
+    #concept {
+      background: var(--cream);
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: center;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    .concept-visual {
+      aspect-ratio: 4/5;
+      background:
+        radial-gradient(ellipse at 40% 60%, rgba(201,169,110,0.3) 0%, transparent 60%),
+        linear-gradient(135deg, #3a2518 0%, #6b4f3a 50%, #4a3525 100%);
+      position: relative;
+      overflow: hidden;
+    }
+    .concept-visual::before {
+      content: '';
+      position: absolute;
+      inset: 20px;
+      border: 1px solid rgba(201,169,110,0.3);
+    }
+    .concept-visual::after {
+      content: '☕';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 5rem;
+      opacity: 0.15;
+    }
+    .concept-body p {
+      font-size: 0.95rem;
+      line-height: 2;
+      color: var(--light-text);
+      margin-bottom: 20px;
+    }
+    .concept-body p strong {
+      color: var(--text);
+      font-weight: 400;
+    }
+
+    /* MENU */
+    #menu {
+      background: var(--dark);
+      color: var(--cream);
+      max-width: 100%;
+    }
+    #menu .inner {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    #menu .section-title { color: var(--cream); }
+    .menu-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2px;
+      margin-top: 60px;
+    }
+    .menu-card {
+      background: rgba(255,255,255,0.04);
+      padding: 40px 32px;
+      border: 1px solid rgba(201,169,110,0.12);
+      transition: background 0.3s, transform 0.3s;
+      cursor: default;
+    }
+    .menu-card:hover {
+      background: rgba(201,169,110,0.08);
+      transform: translateY(-4px);
+    }
+    .menu-icon {
+      font-size: 2rem;
+      margin-bottom: 20px;
+      display: block;
+    }
+    .menu-card h3 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.5rem;
+      font-weight: 400;
+      color: var(--cream);
+      margin-bottom: 8px;
+    }
+    .menu-card .menu-en {
+      font-size: 0.65rem;
+      letter-spacing: 0.2em;
+      color: var(--accent);
+      margin-bottom: 16px;
+      text-transform: uppercase;
+    }
+    .menu-card p {
+      font-size: 0.82rem;
+      line-height: 1.9;
+      color: rgba(245,240,232,0.5);
+      margin-bottom: 20px;
+    }
+    .menu-price {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.2rem;
+      color: var(--accent);
+    }
+
+    /* ABOUT */
+    #about {
+      background: var(--beige);
+      max-width: 100%;
+    }
+    #about .inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr 1.2fr;
+      gap: 80px;
+      align-items: center;
+    }
+    .about-stats {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 32px;
+      margin-top: 40px;
+    }
+    .stat-item {
+      padding: 24px;
+      background: var(--cream);
+      border-left: 2px solid var(--accent);
+    }
+    .stat-number {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2.5rem;
+      font-weight: 300;
+      color: var(--brown);
+      line-height: 1;
+    }
+    .stat-label {
+      font-size: 0.72rem;
+      letter-spacing: 0.15em;
+      color: var(--light-text);
+      margin-top: 6px;
+    }
+    .about-visual {
+      aspect-ratio: 1;
+      background:
+        radial-gradient(circle at 60% 40%, rgba(201,169,110,0.25) 0%, transparent 55%),
+        linear-gradient(145deg, #e8dfd0 0%, #d4c8b4 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 8rem;
+      opacity: 0.4;
+    }
+
+    /* ACCESS */
+    #access {
+      background: var(--cream);
+      max-width: 100%;
+    }
+    #access .inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+    }
+    .access-info { }
+    .access-item {
+      display: flex;
+      gap: 20px;
+      padding: 24px 0;
+      border-bottom: 1px solid rgba(107,79,58,0.1);
+    }
+    .access-item:first-child { border-top: 1px solid rgba(107,79,58,0.1); }
+    .access-label {
+      font-size: 0.68rem;
+      letter-spacing: 0.2em;
+      color: var(--accent);
+      text-transform: uppercase;
+      min-width: 80px;
+      padding-top: 3px;
+    }
+    .access-value {
+      font-size: 0.88rem;
+      line-height: 1.8;
+      color: var(--text);
+    }
+    .map-placeholder {
+      background:
+        linear-gradient(135deg, #d4c8b4 0%, #c8bbaa 100%);
+      border-radius: 2px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 3rem;
+      color: rgba(107,79,58,0.3);
+      min-height: 320px;
+      position: relative;
+      overflow: hidden;
+    }
+    .map-placeholder::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        repeating-linear-gradient(0deg, rgba(107,79,58,0.06) 0px, rgba(107,79,58,0.06) 1px, transparent 1px, transparent 40px),
+        repeating-linear-gradient(90deg, rgba(107,79,58,0.06) 0px, rgba(107,79,58,0.06) 1px, transparent 1px, transparent 40px);
+    }
+    .map-pin {
+      position: absolute;
+      font-size: 2.5rem;
+      animation: bounce 2s ease-in-out infinite;
+    }
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-8px); }
+    }
+
+    /* CONTACT */
+    #contact {
+      background: var(--dark);
+      color: var(--cream);
+      text-align: center;
+    }
+    #contact .section-title { color: var(--cream); }
+    #contact .section-label { margin: 0 auto 16px; }
+    #contact .divider { margin: 0 auto 32px; }
+    #contact p {
+      font-size: 0.88rem;
+      color: rgba(245,240,232,0.5);
+      line-height: 2;
+      max-width: 500px;
+      margin: 0 auto 40px;
+    }
+    .contact-form {
+      max-width: 560px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      text-align: left;
+    }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .form-group { display: flex; flex-direction: column; gap: 8px; }
+    .form-group label {
+      font-size: 0.65rem;
+      letter-spacing: 0.2em;
+      color: var(--accent);
+      text-transform: uppercase;
+    }
+    .form-group input,
+    .form-group textarea {
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(201,169,110,0.2);
+      padding: 14px 16px;
+      color: var(--cream);
+      font-family: 'Noto Serif JP', serif;
+      font-size: 0.85rem;
+      outline: none;
+      transition: border-color 0.2s;
+      resize: vertical;
+    }
+    .form-group input:focus,
+    .form-group textarea:focus {
+      border-color: var(--accent);
+    }
+    .form-group textarea { min-height: 120px; }
+    .btn-submit {
+      padding: 16px;
+      background: var(--accent);
+      color: var(--dark);
+      border: none;
+      font-family: 'Noto Serif JP', serif;
+      font-size: 0.72rem;
+      letter-spacing: 0.25em;
+      cursor: pointer;
+      transition: opacity 0.2s;
+      text-transform: uppercase;
+    }
+    .btn-submit:hover { opacity: 0.85; }
+
+    /* FOOTER */
+    footer {
+      background: #1a0f08;
+      padding: 40px 48px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .footer-logo {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.2rem;
+      color: var(--accent);
+      letter-spacing: 0.2em;
+    }
+    .footer-copy {
+      font-size: 0.68rem;
+      letter-spacing: 0.1em;
+      color: rgba(245,240,232,0.25);
+    }
+    .footer-sns {
+      display: flex;
+      gap: 20px;
+    }
+    .footer-sns a {
+      font-size: 0.68rem;
+      letter-spacing: 0.15em;
+      color: rgba(245,240,232,0.35);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .footer-sns a:hover { color: var(--accent); }
+
+    /* ANIMATIONS */
+    .fade-in {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 0.8s ease, transform 0.8s ease;
+    }
+    .fade-in.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* RESPONSIVE */
+    @media (max-width: 900px) {
+      nav { padding: 16px 24px; }
+      nav.scrolled { padding: 12px 24px; }
+      .nav-links { display: none; }
+      section { padding: 72px 24px; }
+      #concept { grid-template-columns: 1fr; gap: 40px; }
+      .concept-visual { aspect-ratio: 16/9; }
+      .menu-grid { grid-template-columns: 1fr; }
+      #about .inner { grid-template-columns: 1fr; gap: 40px; }
+      #access .inner { grid-template-columns: 1fr; gap: 40px; }
+      .form-row { grid-template-columns: 1fr; }
+      footer { flex-direction: column; gap: 20px; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav id="main-nav">
+    <a href="#" class="nav-logo">NOKA</a>
+    <ul class="nav-links">
+      <li><a href="#concept">Concept</a></li>
+      <li><a href="#menu">Menu</a></li>
+      <li><a href="#about">About</a></li>
+      <li><a href="#access">Access</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero" id="top">
+    <div class="hero-bg"></div>
+    <div class="hero-pattern"></div>
+    <div class="hero-content">
+      <p class="hero-eyebrow">Since 2018 · 京都・東山</p>
+      <h1 class="hero-title">NOKA<br><em>Coffee</em></h1>
+      <p class="hero-subtitle">野花珈琲 — 自家焙煎の一杯を、静かな時間とともに</p>
+      <a href="#concept" class="hero-cta">Explore</a>
+    </div>
+    <div class="hero-scroll">
+      <div class="scroll-line"></div>
+      <span>Scroll</span>
+    </div>
+  </section>
+
+  <!-- CONCEPT -->
+  <section id="concept">
+    <div class="concept-visual"></div>
+    <div class="concept-body fade-in">
+      <p class="section-label">Our Concept</p>
+      <h2 class="section-title">一杯に宿る、<br><em>静寂と豊かさ</em>。</h2>
+      <div class="divider"></div>
+      <p>NOKAは、京都・東山のひっそりとした路地に佇む<strong>自家焙煎コーヒー専門店</strong>です。世界各地から厳選したシングルオリジンの生豆を、店主が毎朝丁寧に焙煎します。</p>
+      <p>慌ただしい日常の中に、ふと立ち止まれる場所を。コーヒーの香りと共に、あなただけの静かな時間をお届けします。</p>
+      <p><strong>「野の花のように、さりげなく、でも確かに美しく」</strong><br>——それがNOKAのすべてです。</p>
+    </div>
+  </section>
+
+  <!-- MENU -->
+  <section id="menu">
+    <div class="inner">
+      <p class="section-label">Menu</p>
+      <h2 class="section-title">丁寧に、<em>ていねいに</em>。</h2>
+      <div class="divider"></div>
+      <div class="menu-grid">
+        <div class="menu-card fade-in">
+          <span class="menu-icon">☕</span>
+          <h3>ハンドドリップ</h3>
+          <p class="menu-en">Hand Drip Coffee</p>
+          <p>その日の最高の豆を、一杯ずつ丁寧に抽出。浅煎り・中煎り・深煎りから選べます。</p>
+          <span class="menu-price">¥ 750〜</span>
+        </div>
+        <div class="menu-card fade-in">
+          <span class="menu-icon">🫖</span>
+          <h3>カフェラテ</h3>
+          <p class="menu-en">Café Latte</p>
+          <p>地元牧場のノンホモ牛乳を使用。エスプレッソの苦みと甘みが絶妙に調和します。</p>
+          <span class="menu-price">¥ 680〜</span>
+        </div>
+        <div class="menu-card fade-in">
+          <span class="menu-icon">🌿</span>
+          <h3>抹茶ラテ</h3>
+          <p class="menu-en">Matcha Latte</p>
+          <p>京都・宇治産の最高級抹茶を使用。コーヒーと並ぶNOKAのもう一つの顔。</p>
+          <span class="menu-price">¥ 720〜</span>
+        </div>
+        <div class="menu-card fade-in">
+          <span class="menu-icon">🍮</span>
+          <h3>プリン</h3>
+          <p class="menu-en">House Pudding</p>
+          <p>毎朝手作り。卵と牛乳だけで仕込む昔ながらの固めプリン。コーヒーと共に。</p>
+          <span class="menu-price">¥ 480</span>
+        </div>
+        <div class="menu-card fade-in">
+          <span class="menu-icon">🌾</span>
+          <h3>トースト</h3>
+          <p class="menu-en">Artisan Toast</p>
+          <p>地元パン屋の食パンを厚切りで。バターと自家製ジャムをたっぷりと。</p>
+          <span class="menu-price">¥ 450</span>
+        </div>
+        <div class="menu-card fade-in">
+          <span class="menu-icon">📦</span>
+          <h3>豆の販売</h3>
+          <p class="menu-en">Coffee Beans</p>
+          <p>100g・200g・500gでお持ち帰り可。ギフト包装も承ります。</p>
+          <span class="menu-price">¥ 900〜</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section id="about">
+    <div class="inner">
+      <div class="about-image fade-in">
+        <div class="about-visual">🫘</div>
+        <div class="about-stats">
+          <div class="stat-item">
+            <div class="stat-number">7+</div>
+            <div class="stat-label">Years of Experience</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-number">18</div>
+            <div class="stat-label">Origin Countries</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-number">2k</div>
+            <div class="stat-label">Monthly Visitors</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-number">100%</div>
+            <div class="stat-label">Self Roasted</div>
+          </div>
+        </div>
+      </div>
+      <div class="fade-in">
+        <p class="section-label">About</p>
+        <h2 class="section-title">店主・<em>中村 葉子</em><br>について</h2>
+        <div class="divider"></div>
+        <p style="font-size:0.9rem;line-height:2;color:var(--light-text);margin-bottom:16px;">東京のコーヒーチェーンで7年間バリスタを経験後、京都に移住。世界各地のコーヒー農園を自ら訪れ、生産者との信頼関係を築いてきました。</p>
+        <p style="font-size:0.9rem;line-height:2;color:var(--light-text);margin-bottom:16px;">「コーヒーはただの飲み物ではなく、生産者の物語と、飲む人の時間をつなぐもの」という信念のもと、2018年にNOKAを開業。</p>
+        <p style="font-size:0.9rem;line-height:2;color:var(--light-text);">SCA（Specialty Coffee Association）認定バリスタ資格保有。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ACCESS -->
+  <section id="access">
+    <div class="inner">
+      <div class="fade-in">
+        <p class="section-label">Access</p>
+        <h2 class="section-title">お越しの<br><em>方法</em></h2>
+        <div class="divider"></div>
+        <div class="access-info">
+          <div class="access-item">
+            <span class="access-label">住所</span>
+            <span class="access-value">京都府京都市東山区<br>小松町564-2</span>
+          </div>
+          <div class="access-item">
+            <span class="access-label">営業時間</span>
+            <span class="access-value">平日 8:00 — 18:00<br>土日祝 8:00 — 19:00</span>
+          </div>
+          <div class="access-item">
+            <span class="access-label">定休日</span>
+            <span class="access-value">毎週火曜日<br>（祝日の場合は翌水曜）</span>
+          </div>
+          <div class="access-item">
+            <span class="access-label">アクセス</span>
+            <span class="access-value">京阪「祇園四条駅」より<br>徒歩10分</span>
+          </div>
+          <div class="access-item">
+            <span class="access-label">駐車場</span>
+            <span class="access-value">なし（近隣コインパーキング<br>をご利用ください）</span>
+          </div>
+        </div>
+      </div>
+      <div class="map-placeholder fade-in">
+        <div class="map-pin">📍</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section id="contact">
+    <p class="section-label">Contact</p>
+    <h2 class="section-title">お問い合わせ</h2>
+    <div class="divider"></div>
+    <p>ご予約・豆のご注文・取材など、<br>お気軽にお問い合わせください。</p>
+    <form class="contact-form fade-in" onsubmit="return false;">
+      <div class="form-row">
+        <div class="form-group">
+          <label>お名前</label>
+          <input type="text" placeholder="山田 太郎">
+        </div>
+        <div class="form-group">
+          <label>メールアドレス</label>
+          <input type="email" placeholder="example@mail.com">
+        </div>
+      </div>
+      <div class="form-group">
+        <label>件名</label>
+        <input type="text" placeholder="お問い合わせ内容をご記入ください">
+      </div>
+      <div class="form-group">
+        <label>メッセージ</label>
+        <textarea placeholder="ご質問・ご要望などをお書きください"></textarea>
+      </div>
+      <button type="submit" class="btn-submit">送信する — Send Message</button>
+    </form>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <span class="footer-logo">NOKA COFFEE</span>
+    <span class="footer-copy">© 2024 NOKA Coffee. All rights reserved.</span>
+    <div class="footer-sns">
+      <a href="#">Instagram</a>
+      <a href="#">Twitter</a>
+    </div>
+  </footer>
+
+  <script>
+    // Nav scroll effect
+    const nav = document.getElementById('main-nav');
+    window.addEventListener('scroll', () => {
+      nav.classList.toggle('scrolled', window.scrollY > 60);
+    });
+
+    // Fade-in on scroll
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.classList.add('visible');
+        }
+      });
+    }, { threshold: 0.15 });
+    document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+  </script>
+</body>
+</html>
